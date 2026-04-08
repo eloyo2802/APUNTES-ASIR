@@ -1,6 +1,6 @@
 #!/bin/bash
 
-url="https://github.com/DavidRodera/Grado-Superior-ASIR.git"
+url="https://github.com/eloyo2802/APUNTES-ASIR.git"
 repositorio=$(basename "$url" .git)
 ruta=$(find /home/$(whoami) -type d -name "$repositorio" -print -quit)
 cd $ruta
