@@ -1,0 +1,50 @@
+EXAMENES
+te preguntan 5 ejercicios de limpieza.
+te pueden pedir al menos una copia completa, una copia diferencial, una incremental, resturar una completa y al menos una de las otras dos.
+
+APUNTES.
+
+copia seguridad completa.
+mysqldump -u admin -p logistica_global > 00_setup_logistica_masivo.sql
+copia seguridad incremental.
+PASO 1
+ver si esta activo el log binario con el comando 
+"mysql> SHOW VARIABLES LIKE 'log_bin';"
+PASO 2
+listar los archivos log disponibles con el comando
+"mysql> SHOW BINARY LOGS;"
+PASO 3
+ver el log que estas usando AHORA con el comando
+"myslq> SHOW MASTER STATUS;"
+PASO 4
+general un log hasta el momento actual con el comando
+"mysql> FLUSH LOGS;"
+PASO 5
+mysqlbinlog --read-from-remote-server -u admin -p -h localhost binlog.000002
+
+PARTE SI LA CAGO
+
+PASO 5.1 (de aqui en adelante estos pasos se hacen en caso de haberla cagado en un ejercicio)
+ver el binlog y saber donde esta la cagada para arreglarla con este comando 
+mysqlbinlog --read-from-remote-server -u admin -p -h localhost --base64-output=DECODE-ROWS -v binlog.000183 > loquesea.txt
+PASO 5.2
+con esto puedo solo guardar justo antes de cagarla con este comando
+mysqlbinlog --read-from-remote-server -u admin -p -h localhost --stop-datetime="2026-04-17 10:04:58" loquesea.sql
+PASO 5.3
+guardar normal
+mysqlbinlog --read-from-remote-server -u admin -p -h localhost loquesea.sql
+
+copia seguridad diferencial.
+mysqlbinlog binlog.000001 binlog.000002 > loquesea_diferencial.sql
+
+
+
+solo guardar una tabla
+mysqldump -u admin -p logistica_global (tabla a guardar) > 00_setup_logistica_masivo_solo_(tabla a guardar).sql
+solo esquema sin datos
+mysqldump -u admin -p --no-data logistica_global > 00_setup_logistica_masivo_solo_esquemas.sql
+solo datos
+mysqldump -u admin -p --no-create-info logistica_global > 00_setup_logistica_masivo_solo_datos.sql
+
+
+
