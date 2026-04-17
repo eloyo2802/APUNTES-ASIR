@@ -37,6 +37,10 @@ mysqlbinlog --read-from-remote-server -u admin -p -h localhost loquesea.sql
 copia seguridad diferencial.
 mysqlbinlog binlog.000001 binlog.000002 > loquesea_diferencial.sql
 
+RESTAURACION.
+
+mysql -u root -p nombre_base_datos < backup_incremental.sql
+
 
 
 solo guardar una tabla
